@@ -227,8 +227,8 @@ func (b *Remote) checkPolicy(stopCtx, cancelCtx context.Context, op *backend.Ope
 		case tfe.PolicyHardFailed:
 			return fmt.Errorf(msgPrefix + " hard failed.")
 		case tfe.PolicySoftFailed:
-			if op.UIOut == nil || op.UIIn == nil || op.AutoApprove ||
-				!pc.Actions.IsOverridable || !pc.Permissions.CanOverride {
+			if op.Type == backend.OperationTypePlan || op.UIOut == nil || op.UIIn == nil ||
+				op.AutoApprove || !pc.Actions.IsOverridable || !pc.Permissions.CanOverride {
 				return fmt.Errorf(msgPrefix + " soft failed.")
 			}
 		default:

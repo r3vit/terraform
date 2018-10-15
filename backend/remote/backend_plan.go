@@ -210,6 +210,14 @@ func (b *Remote) plan(stopCtx, cancelCtx context.Context, op *backend.Operation,
 		return r, generalError("error reading logs", err)
 	}
 
+	// Check any configured sentinel policies.
+	if len(r.PolicyChecks) > 0 {
+		err = b.checkPolicy(stopCtx, cancelCtx, op, r)
+		if err != nil {
+			return r, err
+		}
+	}
+
 	return r, nil
 }
 
